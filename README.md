@@ -15,6 +15,9 @@
 - output is in `dist` directory,
   [ready to be deployed](https://create-react-app.dev/docs/deployment/)
 
+## Test
+- run `yarn test` to test using vitest!
+
 ## Data
 All data is fetched from the SeatGeek API at
 [seatgeek.com](https://platform.seatgeek.com/).
