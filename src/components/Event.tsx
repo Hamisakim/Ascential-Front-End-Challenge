@@ -12,6 +12,7 @@ import {
   Spinner,
   Button,
   Stack,
+  Tooltip,
 } from '@chakra-ui/react';
 import Breadcrumbs from './Breadcrumbs';
 import Error from './Error';
@@ -63,7 +64,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
   //Saying that if the rest of the app is using the same pattern, it's better to stick with that, just what I'd prefer. Have stuck with this for the rest of the code
   const { datetime_utc } = event;
   const { timezone } = event.venue;
-  
+  const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return (
     <Stack spacing="6" m="6">
       <SimpleGrid columns={[1, 1, 2]} borderWidth="1px" borderRadius="md" p="4">
@@ -78,9 +79,11 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
           <StatLabel display="flex">
             <Box as="span">Date</Box>
           </StatLabel>
-          <StatNumber fontSize="xl">
-            {formatDateTimeFromUTC(datetime_utc, { timeZone: timezone })}
-          </StatNumber>
+          <Tooltip label={formatDateTimeFromUTC(datetime_utc, { timeZone: userTimezone })} placement='auto-start'>
+            <StatNumber fontSize="xl">
+              {formatDateTimeFromUTC(datetime_utc, { timeZone: timezone })}
+            </StatNumber>
+          </Tooltip>
         </Stat>
       </SimpleGrid>
       <Flex>
