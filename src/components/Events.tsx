@@ -11,13 +11,13 @@ import {
   Stack,
   Image,
   LinkBox,
-  LinkOverlay 
+  LinkOverlay,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import Breadcrumbs from './Breadcrumbs';
 import Error from './Error';
 import { useSeatGeek } from '../utils/useSeatGeek';
-import { formatDateTime } from '../utils/formatDateTime';
+import { formatDateTimeFromUTC } from '../utils/formatDateTime';
 
 export interface Performers {
   image: string;
@@ -32,7 +32,7 @@ export interface Venue {
 export interface EventProps {
   id: string;
   short_title: string;
-  datetime_utc: Date;
+  datetime_utc: string;
   performers: Performers[];
   venue: Venue;
 }
@@ -42,7 +42,7 @@ interface EventItemProps {
 }
 
 const Events: React.FC = () => {
-  const { data, error } = useSeatGeek('/events', { 
+  const { data, error } = useSeatGeek('/events', {
     type: 'concert',
     sort: 'score.desc',
     per_page: '24',
@@ -55,7 +55,7 @@ const Events: React.FC = () => {
       <Flex justifyContent="center" alignItems="center" minHeight="50vh">
         <Spinner size="lg" />
       </Flex>
-    )
+    );
   }
 
   return (
@@ -71,8 +71,8 @@ const Events: React.FC = () => {
 };
 
 const EventItem: React.FC<EventItemProps> = ({ event }) => (
-  <LinkBox 
-    as={Card} 
+  <LinkBox
+    as={Card}
     variant="outline"
     overflow="hidden"
     bg="gray.50"
@@ -83,7 +83,9 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => (
     <CardBody>
       <Stack spacing="2">
         <Heading size="md">
-          <LinkOverlay as={Link} to={`/events/${event.id}`}>{event.short_title}</LinkOverlay>
+          <LinkOverlay as={Link} to={`/events/${event.id}`}>
+            {event.short_title}
+          </LinkOverlay>
         </Heading>
         <Box>
           <Text fontSize="sm" color="gray.600">
@@ -93,8 +95,15 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => (
             {event.venue.display_location}
           </Text>
         </Box>
-        <Text fontSize="sm" fontWeight="bold" color="gray.600" justifySelf={'end'}>
-          {formatDateTime(event.datetime_utc)}
+        <Text
+          fontSize="sm"
+          fontWeight="bold"
+          color="gray.600"
+          justifySelf={'end'}
+        >
+          {formatDateTimeFromUTC(event.datetime_utc, {
+            timeZone: event.venue.timezone,
+          })}
         </Text>
       </Stack>
     </CardBody>

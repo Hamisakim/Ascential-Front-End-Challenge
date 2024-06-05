@@ -1,11 +1,11 @@
 /**
- * Formats a given timestamp into a localized date and time string.
- * @param timestamp - The timestamp to format.
- * @param options - Optional configuration options for formatting.
+ * Formats a UTC timestamp into a localized date and time string.
+ * @param timestamp - The UTC timestamp to format.
+ * @param options - Optional configuration for the date and time formatting.
  * @returns The formatted date and time string.
  */
-export function formatDateTime(
-  timestamp: Date,
+export function formatDateTimeFromUTC(
+  timestamp: string,
   options?: Intl.DateTimeFormatOptions
 ) {
   const defaultOptions: Intl.DateTimeFormatOptions = {
@@ -17,10 +17,11 @@ export function formatDateTime(
     second: 'numeric',
     timeZoneName: 'short',
   };
-
   const mergedOptions = { ...defaultOptions, ...options };
 
+  const utcDate = new Date(`${timestamp}Z`); //? Need to append Z so that the date is treated as UTC by code
+
   return new Intl.DateTimeFormat('en-US', mergedOptions).format(
-    new Date(timestamp)
+    new Date(utcDate)
   );
 }
