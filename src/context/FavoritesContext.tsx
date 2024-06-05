@@ -15,6 +15,7 @@ interface FavoritesContextProps {
 const FavoritesContext = createContext<FavoritesContextProps | undefined>(undefined);
 
 export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
     const storedFavorites = localStorage.getItem('favorites');
     return storedFavorites ? JSON.parse(storedFavorites) : [];

@@ -10,8 +10,10 @@ import {
   ListItem,
   ListIcon,
   Button,
+  IconButton,
+  Flex,
 } from '@chakra-ui/react';
-import { StarIcon } from '@chakra-ui/icons';
+import { DeleteIcon, StarIcon } from '@chakra-ui/icons';
 import { useFavorites } from '../context/FavoritesContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +22,10 @@ interface FavoritesDrawerProps {
   onClose: () => void;
 }
 
-const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({ isOpen, onClose }) => {
+const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
+  isOpen,
+  onClose,
+}) => {
   const { favorites, removeFavorite } = useFavorites();
   const navigate = useNavigate();
 
@@ -38,12 +43,28 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({ isOpen, onClose }) =>
         <DrawerBody>
           <List spacing={3}>
             {favorites.map((item) => (
-              <ListItem key={item.id}>
-                <Button variant="link" onClick={() => handleNavigate(item.id, item.type)}>
-                  <ListIcon as={StarIcon} color="yellow.500" />
+              <ListItem
+                key={item.id}
+                display={'flex'}
+                justifyContent={'space-between'}
+                alignContent={'space-between'}
+              >
+                <Button
+                  variant="link"
+                  onClick={() => handleNavigate(item.id, item.type)}
+                >
                   {item.name}
                 </Button>
-                <Button ml={2} size="sm" onClick={() => removeFavorite(item.id)}>Remove</Button>
+                <IconButton
+                  ml={2}
+                  size="sm"
+                  icon={<DeleteIcon />}
+                  onClick={() => removeFavorite(item.id)}
+                  aria-label={''}
+                  _hover={{ color: 'red.500' }} 
+                >
+                  Remove
+                </IconButton>
               </ListItem>
             ))}
           </List>
