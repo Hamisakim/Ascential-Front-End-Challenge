@@ -4,8 +4,11 @@
  * @param options - Optional configuration options for formatting.
  * @returns The formatted date and time string.
  */
-export function formatDateTime(timestamp: Date, options?: Intl.DateTimeFormatOptions) {
-    const defaultOptions: Intl.DateTimeFormatOptions = {
+export function formatDateTime(
+  timestamp: Date,
+  options?: Intl.DateTimeFormatOptions
+) {
+  const defaultOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -13,11 +16,11 @@ export function formatDateTime(timestamp: Date, options?: Intl.DateTimeFormatOpt
     minute: 'numeric',
     second: 'numeric',
     timeZoneName: 'short',
-    timeZone: 'America/New_York',
-    
   };
 
   const mergedOptions = { ...defaultOptions, ...options };
 
-  return new Intl.DateTimeFormat('en-US', mergedOptions,).format(new Date(timestamp));
+  return new Intl.DateTimeFormat('en-US', mergedOptions).format(
+    new Date(timestamp)
+  );
 }
