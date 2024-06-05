@@ -8,6 +8,12 @@ export function formatDateTimeFromUTC(
   timestamp: string,
   options?: Intl.DateTimeFormatOptions
 ) {
+  
+  if (!timestamp) return '';
+  if (isNaN(Date.parse(timestamp))) {
+    throw new Error('Invalid timestamp format');
+  }
+
   const defaultOptions: Intl.DateTimeFormatOptions = {
     year: 'numeric',
     month: 'long',

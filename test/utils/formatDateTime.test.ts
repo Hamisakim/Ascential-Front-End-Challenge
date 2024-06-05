@@ -17,4 +17,17 @@ describe('formatDateTime', () => {
 
     expect(formattedDateTime).toBe('January 1, 2022 at 12:34:56 PM GMT');
   });
+
+  it('should return an empty string if no timestamp is provided', () => {
+    const timestamp = '';
+    const formattedDateTime = formatDateTimeFromUTC(timestamp);
+
+    expect(formattedDateTime).toBe('');
+  });
+
+  it('should throw an error for invalid timestamp format', () => {
+    const timestamp = 'invalid-timestamp';
+    
+    expect(() => formatDateTimeFromUTC(timestamp)).toThrow('Invalid timestamp format');
+  });
 });
