@@ -20,7 +20,6 @@ export function formatDateTimeFromUTC(
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
-    second: 'numeric',
     timeZoneName: 'short',
   };
   const mergedOptions = { ...defaultOptions, ...options };
