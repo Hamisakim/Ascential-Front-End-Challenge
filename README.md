@@ -2,7 +2,7 @@
 
 ### [👉 Go to the challenge 👈](./CHALLENGE.md)
 
-### [🚀 See the app in action 🚀](https://ascential-frontend-challenge.development.platform-team.com)
+### [🚀 See my version of the app in action 🚀](https://samis-front-end-task.netlify.app/)
 
 ## Develop
 - create `.env` file based on `.env.sample`
