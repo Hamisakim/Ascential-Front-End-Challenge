@@ -63,7 +63,7 @@ const Venue: React.FC = () => {
       >
         <Heading>{venue.name}</Heading>
         <FavoriteButton
-          id={venue.id.toString()}
+          id={venue.id}
           type="venue"
           name={venue.name_v2}
         />

@@ -23,6 +23,7 @@ import FavoriteButton from './common/FavoriteButton';
 
 interface EventInfoProps {
   event: {
+    id: number;
     short_title: string;
     datetime_utc: string;
     venue: Venue;
@@ -61,7 +62,7 @@ const Event: React.FC = () => {
       >
         <Heading>{event.short_title}</Heading>
         <FavoriteButton
-          id={event.id.toString()}
+          id={event.id}
           type="event"
           name={event.short_title + ' at ' + event.venue.name_v2}
         />

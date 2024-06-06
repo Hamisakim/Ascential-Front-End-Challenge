@@ -1,5 +1,4 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-//TODO: Ensure consistency across all venue and event IDs
 export interface FavoriteItem {
   id: string;
   type: 'event' | 'venue';
@@ -12,10 +11,13 @@ export interface FavoritesContextProps {
   removeFavorite: (id: string) => void;
 }
 
-const FavoritesContext = createContext<FavoritesContextProps | undefined>(undefined);
+const FavoritesContext = createContext<FavoritesContextProps | undefined>(
+  undefined
+);
 
-export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  
+export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [favorites, setFavorites] = useState<FavoriteItem[]>(() => {
     const storedFavorites = localStorage.getItem('favorites');
     return storedFavorites ? JSON.parse(storedFavorites) : [];
@@ -30,11 +32,13 @@ export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   };
 
   const removeFavorite = (id: string) => {
-    setFavorites((prev) => prev.filter(item => item.id !== id));
+    setFavorites((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
-    <FavoritesContext.Provider value={{ favorites, addFavorite, removeFavorite }}>
+    <FavoritesContext.Provider
+      value={{ favorites, addFavorite, removeFavorite }}
+    >
       {children}
     </FavoritesContext.Provider>
   );
