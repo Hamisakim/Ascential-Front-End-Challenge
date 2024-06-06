@@ -98,7 +98,7 @@ const EventItem: React.FC<EventItemProps> = ({
     if (isFavorite) {
       removeFavorite(id);
     } else {
-      addFavorite({ id, type: 'venue', name: event.short_title });
+      addFavorite({ id, type: 'event', name: event.short_title });
     }
   };
   return (

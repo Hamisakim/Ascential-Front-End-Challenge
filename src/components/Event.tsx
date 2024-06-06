@@ -48,13 +48,14 @@ const Event: React.FC = () => {
     );
   }
 
-  const isFavorite = favorites.some(fav => fav.id === event.id);
+  const isFavorite = favorites.some(fav => fav.id === event.id.toString());
 
   const handleFavoriteToggle = () => {
+    const id = event.id.toString();
     if (isFavorite) {
-      removeFavorite(event.id);
+      removeFavorite(id);
     } else {
-      addFavorite({ id: event.id, type: 'event', name: event.short_title });
+      addFavorite({ id, type: 'event', name: event.short_title });
     }
   };
 
