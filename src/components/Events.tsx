@@ -101,7 +101,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
             <FavoriteButton
               id={event.id.toString()}
               type="event"
-              name={event.short_title}
+              name={event.short_title + ' at ' + event.venue.name_v2}
             />
           </Heading>
           <Box>
