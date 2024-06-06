@@ -42,7 +42,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
           <List spacing={3}>
             {favorites.map((item) => (
               <ListItem
-                key={item.id}
+                key={item.id + item.type} //? to Prevent duplicate keys when the draw is opened and closed
                 display={'flex'}
                 justifyContent={'space-between'}
                 alignContent={'space-between'}

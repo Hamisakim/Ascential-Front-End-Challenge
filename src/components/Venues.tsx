@@ -76,6 +76,8 @@ const VenueItem: React.FC<VenuItemProps> = ({
   addFavorite,
   removeFavorite,
 }) => {
+  
+  //TODO Ensure consistency for all venue and event IDs being strings or numbers
   const isFavorite = favorites.some((fav) => fav.id === venue.id.toString());
 
   const handleFavoriteToggle = () => {
@@ -86,7 +88,7 @@ const VenueItem: React.FC<VenuItemProps> = ({
       addFavorite({ id, type: 'venue', name: venue.name_v2 });
     }
   };
-  
+
   return (
     <LinkBox>
       <Box
@@ -104,11 +106,13 @@ const VenueItem: React.FC<VenuItemProps> = ({
             venue.has_upcoming_events ? venue.num_upcoming_events : 'No'
           } Upcoming Events`}
         </Badge>
-        <Heading size="sm" noOfLines={1}
-         display={'flex'}
-         justifyContent={'space-between'}
-         alignContent={'space-between'}
-         alignItems={'center'}
+        <Heading
+          size="sm"
+          noOfLines={1}
+          display={'flex'}
+          justifyContent={'space-between'}
+          alignContent={'space-between'}
+          alignItems={'center'}
         >
           <LinkOverlay as={BrowserLink} to={`/venues/${venue.id}`}>
             {venue.name_v2}

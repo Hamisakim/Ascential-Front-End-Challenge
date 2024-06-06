@@ -50,15 +50,18 @@ const Venue: React.FC = () => {
     );
   }
 
-  const isFavorite = favorites.some((fav) => fav.id === venue.id);
+  //TODO Ensure consistency for all venue and event IDs being strings or numbers
+  const isFavorite = favorites.some((fav) => fav.id === venue.id.toString());
 
   const handleFavoriteToggle = () => {
+    const id = venue.id.toString();
     if (isFavorite) {
-      removeFavorite(venue.id);
+      removeFavorite(id);
     } else {
-      addFavorite({ id: venue.id, type: 'venue', name: venue.name });
+      addFavorite({ id, type: 'venue', name: venue.name_v2 });
     }
   };
+
   return (
     <>
       <Breadcrumbs

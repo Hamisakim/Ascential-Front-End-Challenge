@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-//Todo: Ensure consistency across all venue and event IDs
+//TODO: Ensure consistency across all venue and event IDs
 export interface FavoriteItem {
   id: string;
   type: 'event' | 'venue';
