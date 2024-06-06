@@ -24,7 +24,7 @@ export interface VenueProps {
   display_location: string;
 }
 
-interface VenuItemProps {
+interface VenueItemProps {
   venue: VenueProps;
 }
 
@@ -60,7 +60,7 @@ const Venues: React.FC = () => {
   );
 };
 
-const VenueItem: React.FC<VenuItemProps> = ({ venue }) => {
+const VenueItem: React.FC<VenueItemProps> = ({ venue }) => {
   return (
     <LinkBox>
       <Box
