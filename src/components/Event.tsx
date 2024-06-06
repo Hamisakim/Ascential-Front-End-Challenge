@@ -13,15 +13,13 @@ import {
   Button,
   Stack,
   Tooltip,
-  Icon,
 } from '@chakra-ui/react';
 import Breadcrumbs from './Breadcrumbs';
 import Error from './Error';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import { formatDateTimeFromUTC } from '../utils/formatDateTime';
 import { type Venue } from './Events';
-import { useFavorites } from '../context/FavoritesContext';
-import { StarIcon } from '@chakra-ui/icons';
+import FavoriteButton from './common/FavoriteButton';
 
 interface EventInfoProps {
   event: {
@@ -36,7 +34,6 @@ interface EventInfoProps {
 const Event: React.FC = () => {
   const { eventId } = useParams();
   const { data: event, error } = useSeatGeek(`events/${eventId}`);
-  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   if (error) return <Error />;
 
@@ -48,17 +45,6 @@ const Event: React.FC = () => {
     );
   }
 
-  const isFavorite = favorites.some(fav => fav.id === event.id.toString());
-
-  const handleFavoriteToggle = () => {
-    const id = event.id.toString();
-    if (isFavorite) {
-      removeFavorite(id);
-    } else {
-      addFavorite({ id, type: 'event', name: event.short_title });
-    }
-  };
-
   return (
     <>
       <Breadcrumbs
@@ -68,11 +54,18 @@ const Event: React.FC = () => {
           { label: event.short_title },
         ]}
       />
-      <Flex bgColor="gray.200" p={[4, 6]} justifyContent="space-between" alignItems="center">
+      <Flex
+        bgColor="gray.200"
+        p={[4, 6]}
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Heading>{event.short_title}</Heading>
-        <Button onClick={handleFavoriteToggle}>
-        <Icon as={StarIcon} color={isFavorite ? 'yellow.500' : 'black'} />
-        </Button>
+        <FavoriteButton
+          id={event.id.toString()}
+          type="event"
+          name={event.short_title}
+        />
       </Flex>
       <EventInfo event={event} />
     </>
@@ -98,7 +91,12 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
           <StatLabel display="flex">
             <Box as="span">Date</Box>
           </StatLabel>
-          <Tooltip label={formatDateTimeFromUTC(datetime_utc, { timeZone: userTimezone })} placement="auto-start">
+          <Tooltip
+            label={formatDateTimeFromUTC(datetime_utc, {
+              timeZone: userTimezone,
+            })}
+            placement="auto-start"
+          >
             <StatNumber fontSize="xl">
               {formatDateTimeFromUTC(datetime_utc, { timeZone: timezone })}
             </StatNumber>
