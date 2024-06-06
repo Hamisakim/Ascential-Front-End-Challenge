@@ -11,14 +11,11 @@ import {
   Box,
   Spinner,
   AspectRatio,
-  Button,
-  Icon,
 } from '@chakra-ui/react';
 import Breadcrumbs from './Breadcrumbs';
 import Error from './Error';
 import { useSeatGeek } from '../utils/useSeatGeek';
-import { StarIcon } from '@chakra-ui/icons';
-import { useFavorites } from '../context/FavoritesContext';
+import FavoriteButton from './common/FavoriteButton';
 
 interface StatsProps {
   venue: {
@@ -38,7 +35,6 @@ interface MapProps {
 const Venue: React.FC = () => {
   const { venueId } = useParams();
   const { data: venue, error } = useSeatGeek(`venues/${venueId}`);
-  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   if (error) return <Error />;
 
@@ -49,18 +45,6 @@ const Venue: React.FC = () => {
       </Flex>
     );
   }
-
-  //TODO Ensure consistency for all venue and event IDs being strings or numbers
-  const isFavorite = favorites.some((fav) => fav.id === venue.id.toString());
-
-  const handleFavoriteToggle = () => {
-    const id = venue.id.toString();
-    if (isFavorite) {
-      removeFavorite(id);
-    } else {
-      addFavorite({ id, type: 'venue', name: venue.name_v2 });
-    }
-  };
 
   return (
     <>
@@ -78,9 +62,11 @@ const Venue: React.FC = () => {
         alignItems="center"
       >
         <Heading>{venue.name}</Heading>
-        <Button onClick={handleFavoriteToggle}>
-          <Icon as={StarIcon} color={isFavorite ? 'yellow.500' : 'black'} />
-        </Button>
+        <FavoriteButton
+          id={venue.id.toString()}
+          type="venue"
+          name={venue.name_v2}
+        />
       </Flex>
       <Stats venue={venue} />
       <Map location={venue.location} />
