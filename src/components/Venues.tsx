@@ -9,15 +9,13 @@ import {
   Badge,
   LinkBox,
   LinkOverlay,
-  Button,
-  Icon,
 } from '@chakra-ui/react';
 import { Link as BrowserLink } from 'react-router-dom';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import Error from './Error';
 import Breadcrumbs from './Breadcrumbs';
 import { FavoriteItem, useFavorites } from '../context/FavoritesContext';
-import { StarIcon } from '@chakra-ui/icons';
+import FavoriteButton from './common/FavoriteButton';
 
 export interface VenueProps {
   id: number;
@@ -70,24 +68,8 @@ const Venues: React.FC = () => {
   );
 };
 
-const VenueItem: React.FC<VenuItemProps> = ({
-  venue,
-  favorites,
-  addFavorite,
-  removeFavorite,
-}) => {
-  
+const VenueItem: React.FC<VenuItemProps> = ({ venue }) => {
   //TODO Ensure consistency for all venue and event IDs being strings or numbers
-  const isFavorite = favorites.some((fav) => fav.id === venue.id.toString());
-
-  const handleFavoriteToggle = () => {
-    const id = venue.id.toString();
-    if (isFavorite) {
-      removeFavorite(id);
-    } else {
-      addFavorite({ id, type: 'venue', name: venue.name_v2 });
-    }
-  };
 
   return (
     <LinkBox>
@@ -117,9 +99,11 @@ const VenueItem: React.FC<VenuItemProps> = ({
           <LinkOverlay as={BrowserLink} to={`/venues/${venue.id}`}>
             {venue.name_v2}
           </LinkOverlay>
-          <Button onClick={handleFavoriteToggle}>
-            <Icon as={StarIcon} color={isFavorite ? 'yellow.500' : 'black'} />
-          </Button>
+          <FavoriteButton
+            id={venue.id.toString()}
+            type="venue"
+            name={venue.name_v2}
+          />
         </Heading>
         <Text fontSize="sm" color="gray.500">
           {venue.display_location}
