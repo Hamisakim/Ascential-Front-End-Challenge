@@ -14,7 +14,6 @@ import { Link as BrowserLink } from 'react-router-dom';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import Error from './Error';
 import Breadcrumbs from './Breadcrumbs';
-import { FavoriteItem, useFavorites } from '../context/FavoritesContext';
 import FavoriteButton from './common/FavoriteButton';
 
 export interface VenueProps {
@@ -27,9 +26,6 @@ export interface VenueProps {
 
 interface VenuItemProps {
   venue: VenueProps;
-  favorites: FavoriteItem[];
-  addFavorite: (item: FavoriteItem) => void;
-  removeFavorite: (id: string) => void;
 }
 
 const Venues: React.FC = () => {
@@ -38,7 +34,6 @@ const Venues: React.FC = () => {
     per_page: '24',
   });
 
-  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   if (error) return <Error />;
 
@@ -58,9 +53,6 @@ const Venues: React.FC = () => {
           <VenueItem
             key={venue.id.toString()}
             venue={venue}
-            favorites={favorites}
-            addFavorite={addFavorite}
-            removeFavorite={removeFavorite}
           />
         ))}
       </SimpleGrid>
