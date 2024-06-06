@@ -23,7 +23,6 @@ import FavoriteButton from './common/FavoriteButton';
 
 interface EventInfoProps {
   event: {
-    id: string;
     short_title: string;
     datetime_utc: string;
     venue: Venue;
