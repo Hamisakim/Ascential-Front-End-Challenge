@@ -24,7 +24,7 @@ export interface VenueProps {
   display_location: string;
 }
 
-interface VenuItemProps {
+interface VenueItemProps {
   venue: VenueProps;
 }
 
@@ -51,7 +51,7 @@ const Venues: React.FC = () => {
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.venues?.map((venue: VenueProps) => (
           <VenueItem
-            key={venue.id.toString()}
+            key={venue.id}
             venue={venue}
           />
         ))}
@@ -60,9 +60,7 @@ const Venues: React.FC = () => {
   );
 };
 
-const VenueItem: React.FC<VenuItemProps> = ({ venue }) => {
-  //TODO Ensure consistency for all venue and event IDs being strings or numbers
-
+const VenueItem: React.FC<VenueItemProps> = ({ venue }) => {
   return (
     <LinkBox>
       <Box
@@ -92,7 +90,7 @@ const VenueItem: React.FC<VenuItemProps> = ({ venue }) => {
             {venue.name_v2}
           </LinkOverlay>
           <FavoriteButton
-            id={venue.id.toString()}
+            id={venue.id}
             type="venue"
             name={venue.name_v2}
           />

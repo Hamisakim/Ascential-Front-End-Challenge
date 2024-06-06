@@ -4,7 +4,7 @@ import { StarIcon } from '@chakra-ui/icons';
 import { useFavorites } from '../../context/FavoritesContext';
 
 interface FavoriteButtonProps {
-  id: string;
+  id: number;
   type: 'event' | 'venue';
   name: string;
 }
@@ -14,20 +14,21 @@ interface FavoriteButtonProps {
  *
  * @component
  * @param {FavoriteButtonProps} props - The component props.
- * @param {string} props.id - The ID of the item.
+ * @param {number} props.id - The ID as number of the item.
  * @param {string} props.type - The type of the item.
  * @param {string} props.name - The name of the item.
  * @returns {JSX.Element} The rendered FavoriteButton component.
  */
-const FavoriteButton: React.FC<FavoriteButtonProps> = ({ id, type, name }) => {
+const FavoriteButton: React.FC<FavoriteButtonProps> = ({ id, type, name }: FavoriteButtonProps): JSX.Element => {
+  const stringID = id.toString();
   const { favorites, addFavorite, removeFavorite } = useFavorites();
-  const isFavorite = favorites.some((fav) => fav.id === id);
+  const isFavorite = favorites.some((fav) => fav.id === stringID);
 
   const handleFavoriteToggle = () => {
     if (isFavorite) {
-      removeFavorite(id);
+      removeFavorite(stringID);
     } else {
-      addFavorite({ id, type, name });
+      addFavorite({ id: stringID, type, name });
     }
   };
 

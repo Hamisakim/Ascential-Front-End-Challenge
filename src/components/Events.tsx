@@ -29,9 +29,8 @@ export interface Venue {
   display_location: string;
   timezone: string;
 }
-//TODO Ensure consistency for all venue and event IDs being strings or numbers
 export interface EventProps {
-  id: string;
+  id: number;
   short_title: string;
   datetime_utc: string;
   performers: Performers[];
@@ -99,7 +98,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => {
               {event.short_title}
             </LinkOverlay>
             <FavoriteButton
-              id={event.id.toString()}
+              id={event.id}
               type="event"
               name={event.short_title + ' at ' + event.venue.name_v2}
             />
