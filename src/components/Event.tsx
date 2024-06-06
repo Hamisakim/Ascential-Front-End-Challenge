@@ -19,6 +19,7 @@ import Error from './Error';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import { formatDateTimeFromUTC } from '../utils/formatDateTime';
 import { type Venue } from './Events';
+import FavoriteButton from './common/FavoriteButton';
 
 interface EventInfoProps {
   event: {
@@ -32,6 +33,7 @@ interface EventInfoProps {
 const Event: React.FC = () => {
   const { eventId } = useParams();
   const { data: event, error } = useSeatGeek(`events/${eventId}`);
+
   if (error) return <Error />;
 
   if (!event) {
@@ -51,8 +53,18 @@ const Event: React.FC = () => {
           { label: event.short_title },
         ]}
       />
-      <Flex bgColor="gray.200" p={[4, 6]}>
+      <Flex
+        bgColor="gray.200"
+        p={[4, 6]}
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Heading>{event.short_title}</Heading>
+        <FavoriteButton
+          id={event.id.toString()}
+          type="event"
+          name={event.short_title + ' at ' + event.venue.name_v2}
+        />
       </Flex>
       <EventInfo event={event} />
     </>
@@ -60,11 +72,10 @@ const Event: React.FC = () => {
 };
 
 const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
-  //Personally prefer destructuring the props in the function for better readability at a negeligble cost of performance
-  //Saying that if the rest of the app is using the same pattern, it's better to stick with that, just what I'd prefer. Have stuck with this for the rest of the code
   const { datetime_utc } = event;
   const { timezone } = event.venue;
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   return (
     <Stack spacing="6" m="6">
       <SimpleGrid columns={[1, 1, 2]} borderWidth="1px" borderRadius="md" p="4">
@@ -79,7 +90,12 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
           <StatLabel display="flex">
             <Box as="span">Date</Box>
           </StatLabel>
-          <Tooltip label={formatDateTimeFromUTC(datetime_utc, { timeZone: userTimezone })} placement='auto-start'>
+          <Tooltip
+            label={formatDateTimeFromUTC(datetime_utc, {
+              timeZone: userTimezone,
+            })}
+            placement="auto-start"
+          >
             <StatNumber fontSize="xl">
               {formatDateTimeFromUTC(datetime_utc, { timeZone: timezone })}
             </StatNumber>
@@ -87,7 +103,7 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => {
         </Stat>
       </SimpleGrid>
       <Flex>
-        <Button as={'a'} href={event.url} minWidth="0">
+        <Button as="a" href={event.url} minWidth="0">
           Buy Tickets
         </Button>
       </Flex>
