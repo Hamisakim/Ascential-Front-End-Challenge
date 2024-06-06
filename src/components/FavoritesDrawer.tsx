@@ -8,12 +8,10 @@ import {
   DrawerCloseButton,
   List,
   ListItem,
-  ListIcon,
   Button,
   IconButton,
-  Flex,
 } from '@chakra-ui/react';
-import { DeleteIcon, StarIcon } from '@chakra-ui/icons';
+import { DeleteIcon } from '@chakra-ui/icons';
 import { useFavorites } from '../context/FavoritesContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,7 +59,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                   icon={<DeleteIcon />}
                   onClick={() => removeFavorite(item.id)}
                   aria-label={''}
-                  _hover={{ color: 'red.500' }} 
+                  _hover={{ color: 'red.500' }}
                 >
                   Remove
                 </IconButton>

@@ -1,12 +1,12 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-
-interface FavoriteItem {
+//Todo: Ensure consistency across all venue and event IDs
+export interface FavoriteItem {
   id: string;
   type: 'event' | 'venue';
   name: string;
 }
 
-interface FavoritesContextProps {
+export interface FavoritesContextProps {
   favorites: FavoriteItem[];
   addFavorite: (item: FavoriteItem) => void;
   removeFavorite: (id: string) => void;

@@ -1,9 +1,23 @@
 import React from 'react';
-import { SimpleGrid, Flex, Spinner, Heading, Text, Box, Badge, LinkBox, LinkOverlay } from '@chakra-ui/react';
+import {
+  SimpleGrid,
+  Flex,
+  Spinner,
+  Heading,
+  Text,
+  Box,
+  Badge,
+  LinkBox,
+  LinkOverlay,
+  Button,
+  Icon,
+} from '@chakra-ui/react';
 import { Link as BrowserLink } from 'react-router-dom';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import Error from './Error';
 import Breadcrumbs from './Breadcrumbs';
+import { FavoriteItem, useFavorites } from '../context/FavoritesContext';
+import { StarIcon } from '@chakra-ui/icons';
 
 export interface VenueProps {
   id: number;
@@ -15,13 +29,18 @@ export interface VenueProps {
 
 interface VenuItemProps {
   venue: VenueProps;
+  favorites: FavoriteItem[];
+  addFavorite: (item: FavoriteItem) => void;
+  removeFavorite: (id: string) => void;
 }
 
 const Venues: React.FC = () => {
-  const { data, error } = useSeatGeek('/venues', { 
+  const { data, error } = useSeatGeek('/venues', {
     sort: 'score.desc',
     per_page: '24',
   });
+
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   if (error) return <Error />;
 
@@ -30,7 +49,7 @@ const Venues: React.FC = () => {
       <Flex justifyContent="center" alignItems="center" minHeight="50vh">
         <Spinner size="lg" />
       </Flex>
-    )
+    );
   }
 
   return (
@@ -38,36 +57,72 @@ const Venues: React.FC = () => {
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Venues' }]} />
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.venues?.map((venue: VenueProps) => (
-          <VenueItem key={venue.id.toString()} venue={venue} />
+          <VenueItem
+            key={venue.id.toString()}
+            venue={venue}
+            favorites={favorites}
+            addFavorite={addFavorite}
+            removeFavorite={removeFavorite}
+          />
         ))}
       </SimpleGrid>
     </>
   );
 };
 
-const VenueItem: React.FC<VenuItemProps> = ({ venue }) => (
-  <LinkBox>
-    <Box        
-      p={[4, 6]}
-      bg="gray.50"
-      borderColor="gray.200"
-      borderWidth="1px"
-      justifyContent="center" 
-      alignContent="center"
-      rounded="lg"
-      _hover={{ bg: 'gray.100' }}
-    >
-      <Badge colorScheme={venue.has_upcoming_events ? 'green' : 'red'} mb="2">
-        {`${venue.has_upcoming_events ? venue.num_upcoming_events : 'No'} Upcoming Events`}
-      </Badge>
-      <Heading size='sm' noOfLines={1}>
-        <LinkOverlay as={BrowserLink} to={`/venues/${venue.id}`}>
-          {venue.name_v2}
-        </LinkOverlay>
-      </Heading>
-      <Text fontSize="sm" color="gray.500">{venue.display_location}</Text>
-    </Box>
-  </LinkBox>
-);
+const VenueItem: React.FC<VenuItemProps> = ({
+  venue,
+  favorites,
+  addFavorite,
+  removeFavorite,
+}) => {
+  const isFavorite = favorites.some((fav) => fav.id === venue.id.toString());
+
+  const handleFavoriteToggle = () => {
+    const id = venue.id.toString();
+    if (isFavorite) {
+      removeFavorite(id);
+    } else {
+      addFavorite({ id, type: 'venue', name: venue.name_v2 });
+    }
+  };
+  
+  return (
+    <LinkBox>
+      <Box
+        p={[4, 6]}
+        bg="gray.50"
+        borderColor="gray.200"
+        borderWidth="1px"
+        justifyContent="center"
+        alignContent="center"
+        rounded="lg"
+        _hover={{ bg: 'gray.100' }}
+      >
+        <Badge colorScheme={venue.has_upcoming_events ? 'green' : 'red'} mb="2">
+          {`${
+            venue.has_upcoming_events ? venue.num_upcoming_events : 'No'
+          } Upcoming Events`}
+        </Badge>
+        <Heading size="sm" noOfLines={1}
+         display={'flex'}
+         justifyContent={'space-between'}
+         alignContent={'space-between'}
+         alignItems={'center'}
+        >
+          <LinkOverlay as={BrowserLink} to={`/venues/${venue.id}`}>
+            {venue.name_v2}
+          </LinkOverlay>
+          <Button onClick={handleFavoriteToggle}>
+            <Icon as={StarIcon} color={isFavorite ? 'yellow.500' : 'black'} />
+          </Button>
+        </Heading>
+        <Text fontSize="sm" color="gray.500">
+          {venue.display_location}
+        </Text>
+      </Box>
+    </LinkBox>
+  );
+};
 
 export default Venues;
