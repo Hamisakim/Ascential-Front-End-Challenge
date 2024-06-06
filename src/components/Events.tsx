@@ -12,8 +12,6 @@ import {
   Image,
   LinkBox,
   LinkOverlay,
-  Button,
-  Icon,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import Breadcrumbs from './Breadcrumbs';
@@ -21,7 +19,7 @@ import Error from './Error';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import { formatDateTimeFromUTC } from '../utils/formatDateTime';
 import { FavoriteItem, useFavorites } from '../context/FavoritesContext';
-import { StarIcon } from '@chakra-ui/icons';
+import FavoriteButton from './common/FavoriteButton';
 
 export interface Performers {
   image: string;
@@ -85,22 +83,7 @@ const Events: React.FC = () => {
   );
 };
 
-const EventItem: React.FC<EventItemProps> = ({
-  event,
-  favorites,
-  addFavorite,
-  removeFavorite,
-}) => {
-  const isFavorite = favorites.some((fav) => fav.id === event.id.toString());
-
-  const handleFavoriteToggle = () => {
-    const id = event.id.toString();
-    if (isFavorite) {
-      removeFavorite(id);
-    } else {
-      addFavorite({ id, type: 'event', name: event.short_title });
-    }
-  };
+const EventItem: React.FC<EventItemProps> = ({ event }) => {
   return (
     <LinkBox
       as={Card}
@@ -124,9 +107,11 @@ const EventItem: React.FC<EventItemProps> = ({
             <LinkOverlay as={Link} to={`/events/${event.id}`}>
               {event.short_title}
             </LinkOverlay>
-            <Button onClick={handleFavoriteToggle}>
-              <Icon as={StarIcon} color={isFavorite ? 'yellow.500' : 'black'} />
-            </Button>
+            <FavoriteButton
+              id={event.id.toString()}
+              type="event"
+              name={event.short_title}
+            />
           </Heading>
           <Box>
             <Text fontSize="sm" color="gray.600">
