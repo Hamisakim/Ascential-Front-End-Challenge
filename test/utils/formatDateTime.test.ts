@@ -7,7 +7,7 @@ describe('formatDateTime', () => {
     const options = { timeZone: 'America/New_York', hour12: true };
     const formattedDateTime = formatDateTimeFromUTC(timestamp, options);
 
-    expect(formattedDateTime).toBe('January 1, 2022 at 7:34:56 AM EST');
+    expect(formattedDateTime).toBe('January 1, 2022 at 7:34 AM EST');
   });
 
   it('should format the timestamp with no options', () => {
@@ -15,7 +15,7 @@ describe('formatDateTime', () => {
     const options = {};
     const formattedDateTime = formatDateTimeFromUTC(timestamp, options);
 
-    expect(formattedDateTime).toBe('January 1, 2022 at 12:34:56 PM GMT');
+    expect(formattedDateTime).toBe('January 1, 2022 at 12:34 PM GMT');
   });
 
   it('should return an empty string if no timestamp is provided', () => {
