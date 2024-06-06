@@ -10,6 +10,7 @@ import {
   ListItem,
   Button,
   IconButton,
+  Text,
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import { useFavorites } from '../context/FavoritesContext';
@@ -51,7 +52,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                   variant="link"
                   onClick={() => handleNavigate(item.id, item.type)}
                 >
-                  {item.name}
+                  <Text isTruncated>{item.name}</Text>
                 </Button>
                 <IconButton
                   ml={2}
@@ -60,9 +61,7 @@ const FavoritesDrawer: React.FC<FavoritesDrawerProps> = ({
                   onClick={() => removeFavorite(item.id)}
                   aria-label={''}
                   _hover={{ color: 'red.500' }}
-                >
-                  Remove
-                </IconButton>
+                />
               </ListItem>
             ))}
           </List>
