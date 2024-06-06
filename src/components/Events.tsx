@@ -18,7 +18,6 @@ import Breadcrumbs from './Breadcrumbs';
 import Error from './Error';
 import { useSeatGeek } from '../utils/useSeatGeek';
 import { formatDateTimeFromUTC } from '../utils/formatDateTime';
-import { FavoriteItem, useFavorites } from '../context/FavoritesContext';
 import FavoriteButton from './common/FavoriteButton';
 
 export interface Performers {
@@ -41,9 +40,6 @@ export interface EventProps {
 
 interface EventItemProps {
   event: EventProps;
-  favorites: FavoriteItem[];
-  addFavorite: (item: FavoriteItem) => void;
-  removeFavorite: (id: string) => void;
 }
 
 const Events: React.FC = () => {
@@ -52,7 +48,6 @@ const Events: React.FC = () => {
     sort: 'score.desc',
     per_page: '24',
   });
-  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   if (error) return <Error />;
 
@@ -69,12 +64,8 @@ const Events: React.FC = () => {
       <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Events' }]} />
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.events?.map((event: EventProps) => (
-          //TODO Ensure consistency for all venue and event IDs being strings or numbers
           <EventItem
-            key={event.id.toString()}
-            favorites={favorites}
-            addFavorite={addFavorite}
-            removeFavorite={removeFavorite}
+            key={event.id}
             event={event}
           />
         ))}
